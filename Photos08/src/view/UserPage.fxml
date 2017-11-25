@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.HBox?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserPageController">
+   <children>
+      <ListView fx:id="listView" layoutX="-1.0" prefHeight="400.0" prefWidth="225.0" />
+      <TextField fx:id="albumNameField" layoutX="443.0" layoutY="34.0" prefWidth="165.0" />
+      <TextField fx:id="dateField" layoutX="630.0" layoutY="34.0" prefWidth="165.0" promptText="YYYY-YYYY or MM/DD/YYYY" />
+      <TextField fx:id="tagField" layoutX="455.0" layoutY="205.0" prefHeight="25.0" prefWidth="331.0" />
+      <Button fx:id="deleteAlbumButton" layoutX="236.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleDeleteAlbumButton" prefHeight="30.0" prefWidth="175.0" text="Delete Selected Album">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="openAlbumButton" layoutX="236.0" layoutY="101.0" mnemonicParsing="false" onAction="#handleOpenAlbumButton" prefHeight="30.0" prefWidth="175.0" text="Open Selected Album">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="renameAlbumButton" layoutX="236.0" layoutY="185.0" mnemonicParsing="false" onAction="#handleRenameAlbumButton" prefHeight="30.0" prefWidth="175.0" text="Rename Selected Album">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="createAlbumButton" layoutX="443.0" layoutY="71.0" mnemonicParsing="false" onAction="#handleCreateAlbumButton" prefWidth="125.0" text="Create Album">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="dateSearchButton" layoutX="630.0" layoutY="71.0" mnemonicParsing="false" onAction="#handleDateSearchButton" prefWidth="125.0" text="Search">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="tagSearchButton" layoutX="455.0" layoutY="235.0" mnemonicParsing="false" onAction="#handleTagSearchButton" prefWidth="150.0" text="Search">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="logoutButton" layoutX="637.0" layoutY="356.0" mnemonicParsing="false" onAction="#handleLogoutButton" prefWidth="150.0" text="Logout">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Text layoutX="443.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New album name:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="630.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date search:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="455.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tags to search for:" wrappingWidth="125.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Label fx:id="deleteAlbumError" layoutX="236.0" layoutY="44.0" opacity="0.0" text="*Select an album to delete" textFill="RED">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="openAlbumError" layoutX="236.0" layoutY="131.0" opacity="0.0" text="*Select an album to open" textFill="RED">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="renameAlbumError" layoutX="236.0" layoutY="215.0" opacity="0.0" text="*Select an album to rename" textFill="RED">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="createAlbumError1" layoutX="445.0" layoutY="106.0" opacity="0.0" prefWidth="150.0" text="*Enter a name to create" textFill="RED" textOverrun="CLIP">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="createAlbumError2" layoutX="451.0" layoutY="121.0" opacity="0.0" prefHeight="20.0" prefWidth="142.0" text="an album." textFill="RED" textOverrun="CLIP">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="dateSearchError1" layoutX="631.0" layoutY="106.0" opacity="0.0" prefHeight="20.0" prefWidth="171.0" text="*Date searched with" textFill="RED" textOverrun="CLIP">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="dateSearchError2" layoutX="638.0" layoutY="121.0" opacity="0.0" prefHeight="20.0" prefWidth="171.0" text="empty or incorrect fields." textFill="RED" textOverrun="CLIP">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="tagSearchError" layoutX="455.0" layoutY="272.0" opacity="0.0" prefHeight="20.0" prefWidth="345.0" text="*Enter tags to search. Ex: person=Sesh,place=London" textFill="RED" textOverrun="CLIP">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>

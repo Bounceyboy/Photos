@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.HBox?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminPageController">
+   <children>
+      <ListView fx:id="listView" prefHeight="400.0" prefWidth="250.0" />
+      <Button fx:id="deleteUserButton" layoutX="330.0" layoutY="37.0" mnemonicParsing="false" onAction="#handleDeleteButton" prefHeight="25.0" prefWidth="188.0" text="Delete Selected User">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <TextField fx:id="usernameField" layoutX="350.0" layoutY="157.0" />
+      <TextField fx:id="passwordField" layoutX="350.0" layoutY="217.0" />
+      <Button fx:id="createUserButton" layoutX="350.0" layoutY="260.0" mnemonicParsing="false" onAction="#handleCreateButton" text="Create User">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="logoutButton" layoutX="510.0" layoutY="349.0" mnemonicParsing="false" onAction="#handleLogoutButton" text="Logout">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Text layoutX="350.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="350.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Label fx:id="deleteErrorMessage" layoutX="330.0" layoutY="73.0" opacity="0.0" text="*Select a User from the list to delete" textFill="RED">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="createEmptyFieldsMessage" layoutX="336.0" layoutY="296.0" opacity="0.0" text="*Username and/or Password field empty" textFill="RED">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="createUserExistsMessage" layoutX="350.0" layoutY="296.0" opacity="0.0" text="*User already exists" textFill="RED">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>
