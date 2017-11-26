@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SlideshowController">
+   <left>
+      <Button mnemonicParsing="false" onAction="#prev" text="&lt;--" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <Button mnemonicParsing="false" onAction="#next" text="--&gt;" BorderPane.alignment="CENTER" />
+   </right>
+   <bottom>
+      <Button mnemonicParsing="false" onAction="#back" prefHeight="39.0" prefWidth="78.0" text="Back" BorderPane.alignment="BOTTOM_RIGHT">
+         <BorderPane.margin>
+            <Insets left="520.0" />
+         </BorderPane.margin>
+      </Button>
+   </bottom>
+   <center>
+      <ScrollPane fx:id="sp" prefViewportHeight="333.0" prefViewportWidth="484.0">
+         <content>
+            <ImageView fx:id="currentimage" fitHeight="333.0" fitWidth="484.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>
