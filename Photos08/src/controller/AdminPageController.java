@@ -1,8 +1,13 @@
 package controller;
 
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -59,6 +64,7 @@ public class AdminPageController implements Initializable {
 				UserList userList = new UserList("users/loginInfo");
 				User temp = new User(listView.getSelectionModel().getSelectedItem(), "NA");
 				userList.deleteUser(temp);
+				Files.deleteIfExists(Paths.get("users/" + temp.getUsername() + ".txt"));
 				
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("/view/AdminPage.fxml"));
@@ -74,7 +80,7 @@ public class AdminPageController implements Initializable {
 		}
 	}
 	
-	@FXML public void handleCreateButton (ActionEvent event) throws IOException {
+	@FXML public void handleCreateButton (ActionEvent event) throws Exception {
 		createEmptyFieldsMessage.setOpacity(0);
 		createUserExistsMessage.setOpacity(0);
 		deleteErrorMessage.setOpacity(0);
@@ -99,8 +105,8 @@ public class AdminPageController implements Initializable {
 				Optional<ButtonType> result = alert.showAndWait();
 				if (result.get() == ButtonType.OK){
 					User temp = new User(username, password);
-					userList.deleteUserNoFolder(temp);
-					userList.addUserNoFolder(temp);
+					userList.deleteUser(temp);
+					userList.addUser(temp);
 					
 					FXMLLoader loader = new FXMLLoader();
 					loader.setLocation(getClass().getResource("/view/AdminPage.fxml"));
@@ -117,6 +123,7 @@ public class AdminPageController implements Initializable {
 			else {
 				User toAdd = new User(username, password);
 				userList.addUser(toAdd);
+				toAdd.write();
 				
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("/view/AdminPage.fxml"));
@@ -149,6 +156,7 @@ public class AdminPageController implements Initializable {
 			stage.show();
 		}
 	}
+
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {

@@ -14,8 +14,8 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <TextField fx:id="usernameField" layoutX="350.0" layoutY="157.0" />
-      <TextField fx:id="passwordField" layoutX="350.0" layoutY="217.0" />
+      <TextField fx:id="usernameField" layoutX="350.0" layoutY="157.0" onAction="#handleCreateButton" />
+      <TextField fx:id="passwordField" layoutX="350.0" layoutY="217.0" onAction="#handleCreateButton" />
       <Button fx:id="createUserButton" layoutX="350.0" layoutY="260.0" mnemonicParsing="false" onAction="#handleCreateButton" text="Create User">
          <font>
             <Font size="14.0" />

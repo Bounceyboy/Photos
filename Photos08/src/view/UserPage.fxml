@@ -6,12 +6,21 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.HBox?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserPageController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="800.0" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserPageController">
    <children>
       <ListView fx:id="listView" layoutX="-1.0" prefHeight="400.0" prefWidth="225.0" />
-      <TextField fx:id="albumNameField" layoutX="443.0" layoutY="34.0" prefWidth="165.0" />
-      <TextField fx:id="dateField" layoutX="630.0" layoutY="34.0" prefWidth="165.0" promptText="YYYY-YYYY or MM/DD/YYYY" />
-      <TextField fx:id="tagField" layoutX="455.0" layoutY="205.0" prefHeight="25.0" prefWidth="331.0" />
+      <TextField fx:id="albumNameField" layoutX="443.0" layoutY="34.0" onAction="#handleCreateAlbumButton" prefWidth="165.0">
+         <font>
+            <Font size="12.0" />
+         </font></TextField>
+      <TextField fx:id="dateField" layoutX="630.0" layoutY="34.0" onAction="#handleDateSearchButton" prefWidth="165.0" promptText="YYYY-YYYY or MM/DD/YYYY">
+         <font>
+            <Font size="12.0" />
+         </font></TextField>
+      <TextField fx:id="tagField" layoutX="455.0" layoutY="205.0" onAction="#handleTagSearchButton" prefHeight="25.0" prefWidth="331.0">
+         <font>
+            <Font size="12.0" />
+         </font></TextField>
       <Button fx:id="deleteAlbumButton" layoutX="236.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleDeleteAlbumButton" prefHeight="30.0" prefWidth="175.0" text="Delete Selected Album">
          <font>
             <Font size="14.0" />
@@ -27,12 +36,12 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="createAlbumButton" layoutX="443.0" layoutY="71.0" mnemonicParsing="false" onAction="#handleCreateAlbumButton" prefWidth="125.0" text="Create Album">
+      <Button fx:id="createAlbumButton" layoutX="443.0" layoutY="65.0" mnemonicParsing="false" onAction="#handleCreateAlbumButton" prefWidth="125.0" text="Create Album">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="dateSearchButton" layoutX="630.0" layoutY="71.0" mnemonicParsing="false" onAction="#handleDateSearchButton" prefWidth="125.0" text="Search">
+      <Button fx:id="dateSearchButton" layoutX="630.0" layoutY="65.0" mnemonicParsing="false" onAction="#handleDateSearchButton" prefWidth="125.0" text="Search">
          <font>
             <Font size="14.0" />
          </font>

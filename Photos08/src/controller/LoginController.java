@@ -1,6 +1,8 @@
 package controller;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,18 +15,30 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.User;
 import model.UserList;
 
+/**
+ * @author Jason Holley
+ *
+ */
 public class LoginController {
 	
+	public static User currentUser;
 	Stage stage = new Stage();
-
+	
 	@FXML private Button Submit;
 	@FXML private Label errorMessage;
 	@FXML private TextField usernameField;
 	@FXML private PasswordField passwordField;
 	
  
+	/**
+	 * @author Jason Holley
+	 * @param event						Submit button is clicked.
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
 	@FXML public void handleSubmitButtonAction (ActionEvent event) throws ClassNotFoundException, IOException{
 		
 		errorMessage.setOpacity(0);
@@ -46,6 +60,13 @@ public class LoginController {
 		else {
 			UserList userList = new UserList("users/loginInfo");
 			if(userList.findUser(username, password)) {
+					
+				ObjectInputStream inputStream = null;
+			    FileInputStream streamIn = new FileInputStream("users/" + username + ".txt");
+			    inputStream = new ObjectInputStream(streamIn);
+			    currentUser = (User) inputStream.readObject();
+			    inputStream.close();
+				
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("/view/UserPage.fxml"));
 				Parent root = loader.load();
@@ -65,4 +86,5 @@ public class LoginController {
 	public void setStage (Stage stage) {
 		this.stage = stage;
 	}
+	
 }

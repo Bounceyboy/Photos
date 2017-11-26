@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -40,17 +41,6 @@ public class UserList {
 	}
 	
 	public void addUser(User toAdd) throws IOException {
-		//TODO add folder creation
-		BufferedWriter writer = null;
-		FileWriter fstream = new FileWriter ("users/loginInfo", true);
-		writer = new BufferedWriter(fstream);
-		writer.write("\n" + toAdd.getUsername() + "\n");
-		writer.write(toAdd.getPassword() + "\n");
-		writer.close();
-		list.add(toAdd);
-	}
-	
-	public void addUserNoFolder(User toAdd) throws IOException {
 		BufferedWriter writer = null;
 		FileWriter fstream = new FileWriter ("users/loginInfo", true);
 		writer = new BufferedWriter(fstream);
@@ -108,7 +98,6 @@ public class UserList {
 	
 	
 	public void deleteUser (User toDelete) throws IOException {
-		//TODO add delete folder
 		File old = new File("users/loginInfo");
 		String everythingElse = "\n";
 		

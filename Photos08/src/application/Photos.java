@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
 
-public class Main extends Application {
+public class Photos extends Application {
 	
 	Stage stage = new Stage();
 	
