@@ -49,6 +49,7 @@ public class AlbumController {
 	public FileChooser filechoice = new FileChooser();
 	@FXML private TextField newcaption;
 	private Parent selectedparent;
+	Stage stage = new Stage();
 	
 	
 	@FXML
@@ -322,10 +323,14 @@ public class AlbumController {
 	 */
 	public void menu(ActionEvent event) throws IOException {
 		
-		Stage album = (Stage) ((Node)event.getSource()).getScene().getWindow();
-		FXMLLoader fxmlLoader =new FXMLLoader(getClass().getResource("/view/UserPage.fxml"));
-		Parent root = (Parent)fxmlLoader.load();
-		album.setScene(new Scene(root, 800, 400));
-		album.show();
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("/view/UserPage.fxml"));
+		Parent root = loader.load();
+		Scene scene = new Scene(root, 800, 400);
+		
+		((Node) event.getSource()).getScene().getWindow().hide();
+		stage.setScene(scene);
+		stage.setTitle("Photos08");
+		stage.show();
 	}
 }
