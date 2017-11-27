@@ -260,8 +260,8 @@ public class AlbumController {
 							for(int x = 0; x<LoginController.currentUser.getAlbums().size(); x++){
 								if (LoginController.currentUser.getAlbums().get(x).getName().equals(
 										albumlist.getSelectionModel().getSelectedItem())) {
-									LoginController.currentUser.getAlbums().get(x).addimage(selected);
 									UserPageController.selected.removeimage(selected);
+									LoginController.currentUser.getAlbums().get(x).addimage(selected);
 									LoginController.currentUser.write();
 									tileload();
 									stage.close();
