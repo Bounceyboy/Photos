@@ -155,7 +155,7 @@ public class AdminPageController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		ArrayList<String> names = new ArrayList<String>();
-		File usersFolder = new File("/users/");
+		File usersFolder = new File("users/");
 		File[] allFiles = usersFolder.listFiles();
 		for (File file : allFiles) {
 			if(file.isFile()) {
