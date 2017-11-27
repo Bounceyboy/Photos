@@ -1,13 +1,13 @@
 package controller;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import application.Photos;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,8 +26,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import controller.LoginController;
 import model.Album;
-import model.User;
-import model.UserList;
+import model.image;
 
 public class UserPageController implements Initializable {
 
@@ -73,7 +72,7 @@ public class UserPageController implements Initializable {
 		}
 	}
 	
-	@FXML public void handleTagSearchButton (ActionEvent event) {
+	@FXML public void handleTagSearchButton (ActionEvent event) throws Exception {
 		deleteAlbumError.setOpacity(0);
 		dateSearchError1.setOpacity(0);
 		dateSearchError2.setOpacity(0);
@@ -87,11 +86,53 @@ public class UserPageController implements Initializable {
 			tagSearchError.setOpacity(1);
 		}
 		else{
-			//implement tag search
+			String searched, currentKey, currentValue;
+			searched = tagField.getText().trim();
+			ArrayList<image> found = new ArrayList<image>();
+			HashMap<String, ArrayList<String>> currentTags;
+			
+			while(searched.contains("=")){
+				currentKey = searched.substring(0, searched.indexOf('='));
+				searched = searched.substring(currentKey.length()).trim();
+				currentValue = searched.substring(0, searched.indexOf(','));
+				searched = searched.substring(currentValue.length()).trim();
+				
+				currentKey = currentKey.trim();
+				currentValue = currentValue.trim();
+				
+				for(int x = 0; x < LoginController.currentUser.getAlbums().size(); x++) {
+					for (int y = 0; y < LoginController.currentUser.getAlbums().get(x).images.size(); y++) {
+						currentTags = LoginController.currentUser.getAlbums().get(x).images.get(y).gettags();
+						if(currentTags.containsKey(currentKey) && currentTags.containsValue(currentValue)){
+							found.add(LoginController.currentUser.getAlbums().get(x).images.get(y));
+						}
+					}
+				}
+				if (found.isEmpty()) {
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setContentText("No images with those tags found.");
+					alert.showAndWait();
+				}
+				else {
+					Album searchResults = new Album(found);
+					UserPageController.selected = searchResults;
+					
+					selected = LoginController.currentUser.getAlbums().get(listView.getSelectionModel().getSelectedIndex());
+					FXMLLoader loader = new FXMLLoader();
+					loader.setLocation(getClass().getResource("/view/SearchResults.fxml"));
+					Parent root = loader.load();
+					Scene scene = new Scene(root, 400, 600);
+					
+					((Node) event.getSource()).getScene().getWindow().hide();
+					stage.setScene(scene);
+					stage.setTitle(selected.getName());
+					stage.showAndWait();
+				}
+			}
 		}
 	}
 	
-	@FXML public void handleDateSearchButton (ActionEvent event) {
+	@FXML public void handleDateSearchButton (ActionEvent event) throws Exception {
 		deleteAlbumError.setOpacity(0);
 		dateSearchError1.setOpacity(0);
 		dateSearchError2.setOpacity(0);
@@ -106,9 +147,47 @@ public class UserPageController implements Initializable {
 			dateSearchError2.setOpacity(1);
 		}
 		else{
-			//implement date search
+			//TODO change to date search
+			String searched, startDateString, endDateString;
+			searched = tagField.getText().trim();
+			ArrayList<image> found = new ArrayList<image>();
+			
+			while(searched.contains("=")){
+				startDateString = searched.substring(0, searched.indexOf('-'));
+				searched = searched.substring(startDateString.length()).trim();
+				endDateString = searched.trim();
+				startDateString = startDateString.trim();
+				
+				//TODO convert string to date
+				
+				for(int x = 0; x < LoginController.currentUser.getAlbums().size(); x++) {
+					for (int y = 0; y < LoginController.currentUser.getAlbums().get(x).images.size(); y++) {
+							//check for date, if good found.add
+						}
+					}
+				}
+				if (found.isEmpty()) {
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setContentText("No images between those dates found.");
+					alert.showAndWait();
+				}
+				else {
+					Album searchResults = new Album(found);
+					UserPageController.selected = searchResults;
+					
+					selected = LoginController.currentUser.getAlbums().get(listView.getSelectionModel().getSelectedIndex());
+					FXMLLoader loader = new FXMLLoader();
+					loader.setLocation(getClass().getResource("/view/SearchResults.fxml"));
+					Parent root = loader.load();
+					Scene scene = new Scene(root, 400, 600);
+					
+					((Node) event.getSource()).getScene().getWindow().hide();
+					stage.setScene(scene);
+					stage.setTitle(selected.getName());
+					stage.showAndWait();
+				}
+			}
 		}
-	}
 	
 	@FXML public void handleOpenAlbumButton (ActionEvent event) throws IOException {
 		
