@@ -36,6 +36,8 @@ public class LoginController {
 	
  
 	/**
+	 * Handles logging in.
+	 * 
 	 * @param event						Submit button is clicked.
 	 * @throws ClassNotFoundException
 	 * @throws IOException

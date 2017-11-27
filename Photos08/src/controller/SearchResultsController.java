@@ -25,6 +25,12 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.image;
 
+/**
+ * Popup for search results and potential album creation.
+ * 
+ * @author Jason Holley
+ *
+ */
 public class SearchResultsController {
 	
 	Stage stage = new Stage();
@@ -38,6 +44,12 @@ public class SearchResultsController {
 	@FXML private Pane root;
 	public static image selected;
 	
+	/**
+	 * Handles album creation.
+	 * 
+	 * @param event				Create album button is clicked.
+	 * @throws IOException
+	 */
 	@FXML public void handleCreateAlbumButton (ActionEvent event) throws IOException {
 		createAlbumError.setOpacity(0);
 		if(albumNameField.getText().trim().isEmpty()){
@@ -53,6 +65,7 @@ public class SearchResultsController {
 				}	
 			}
 			
+			UserPageController.selected.setName(albumNameField.getText().trim());
 			LoginController.currentUser.addAlbum(UserPageController.selected);
 			
 			FXMLLoader loader = new FXMLLoader();
@@ -67,6 +80,12 @@ public class SearchResultsController {
 		}
 	}
 	
+	/**
+	 * Goes back to main user page.
+	 * 
+	 * @param event				Cancel button is clicked.
+	 * @throws IOException
+	 */
 	@FXML public void handleCancelButton (ActionEvent event) throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/view/UserPage.fxml"));

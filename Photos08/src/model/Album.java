@@ -9,6 +9,7 @@ import java.util.*;
  */
 public class Album implements Serializable{
 
+	private static final long serialVersionUID = 5366994138611502302L;
 	private String name;
 	public ArrayList<image> images;	
 	

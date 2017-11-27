@@ -27,6 +27,12 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import model.User;
 
+/**
+ * Controller for the admin page. Controls creation and deletion of Users.
+ * 
+ * @author Jason Holley
+ *
+ */
 public class AdminPageController implements Initializable {
 
 	Stage stage = new Stage();
@@ -41,6 +47,12 @@ public class AdminPageController implements Initializable {
 	@FXML private Label createUserExistsMessage;
 	@FXML private Label deleteErrorMessage;
 	
+	/**
+	 * Handles deletion of users.
+	 * 
+	 * @param event			Delete button is clicked.
+	 * @throws IOException
+	 */
 	@FXML public void handleDeleteButton (ActionEvent event) throws IOException {
 		deleteErrorMessage.setOpacity(0);
 		createUserExistsMessage.setOpacity(0);
@@ -73,6 +85,12 @@ public class AdminPageController implements Initializable {
 		}
 	}
 	
+	/**
+	 * Handles creation of a user and creating a serialized file to reference him or her.
+	 * 
+	 * @param event			Create button is clicked.
+	 * @throws Exception
+	 */
 	@FXML public void handleCreateButton (ActionEvent event) throws Exception {
 		createEmptyFieldsMessage.setOpacity(0);
 		createUserExistsMessage.setOpacity(0);
@@ -89,32 +107,7 @@ public class AdminPageController implements Initializable {
 			File temp = new File("users/" + username + ".txt");
 			if(temp.exists() && !temp.isDirectory()) {
 				createUserExistsMessage.setOpacity(1);
-			}
-			
-/*			else if(userList.findUser(username)) {
-				Alert alert = new Alert(AlertType.CONFIRMATION);
-				alert.setTitle("Password Change?");
-				alert.setHeaderText("User exists.");
-				alert.setContentText("This user already exists. Would you like to change their password to " + password + "?");
-				Optional<ButtonType> result = alert.showAndWait();
-				if (result.get() == ButtonType.OK){
-					User temp = new User(username, password);
-					userList.deleteUser(temp);
-					userList.addUser(temp);
-					
-					FXMLLoader loader = new FXMLLoader();
-					loader.setLocation(getClass().getResource("/view/AdminPage.fxml"));
-					Parent root = loader.load();
-					Scene scene = new Scene(root, 600, 400);
-					
-					((Node) event.getSource()).getScene().getWindow().hide();
-					stage.setScene(scene);
-					stage.setResizable(false);
-					stage.setTitle("Photos08");
-					stage.show();
-				}
-			} */		//password change functionality?
-			
+			}		
 			else {
 				User toAdd = new User(username, password);
 				toAdd.write();
@@ -133,6 +126,12 @@ public class AdminPageController implements Initializable {
 		}
 	}
 	
+	/**
+	 * Takes the user back to the login page.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML public void handleLogoutButton (ActionEvent event) throws IOException {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setContentText("Are you sure you want to log out?");

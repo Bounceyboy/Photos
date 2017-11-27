@@ -15,6 +15,11 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.scene.control.Alert.AlertType;
 
+/**
+ * Popup for changing an album name.
+ * 
+ * @author Jason Holley
+ */
 public class RenamePopupController {
 	
 	Stage stage = new Stage();
@@ -24,6 +29,12 @@ public class RenamePopupController {
 	@FXML private TextField renameTextField;
 	@FXML private Label renameErrorText;
 	
+	/**
+	 * Changes album name if applicable.
+	 * 
+	 * @param event			Submit button is clicked.
+	 * @throws IOException
+	 */
 	@FXML public void handleSubmitButtonAction (ActionEvent event) throws IOException {
 		renameErrorText.setOpacity(0);
 		if(renameTextField.getText().trim().isEmpty()) {
@@ -55,6 +66,12 @@ public class RenamePopupController {
 		}
 	}
 	
+	/**
+	 * Goes back to main User page.
+	 * 
+	 * @param event				Cancel button is clicked.
+	 * @throws IOException
+	 */
 	@FXML public void handleCancelButtonAction (ActionEvent event) throws IOException {
 		((Node) event.getSource()).getScene().getWindow().hide();
 		FXMLLoader loader = new FXMLLoader();

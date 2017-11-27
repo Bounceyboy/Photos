@@ -8,6 +8,8 @@ import java.util.*;
  *
  */
 public class image implements Serializable{
+
+	private static final long serialVersionUID = 8026102511094144187L;
 	private transient Image pic;
 	private transient Image thumbnail;
 	private File img;

@@ -30,6 +30,12 @@ import controller.LoginController;
 import model.Album;
 import model.image;
 
+/**
+ * Controller for the main page that shows up after a regular user logs in.
+ * 
+ * @author Jason Holley
+ *
+ */
 public class UserPageController implements Initializable {
 
 	public static Stage stage = new Stage();
@@ -56,6 +62,12 @@ public class UserPageController implements Initializable {
 	@FXML private Label createAlbumError1;
 	@FXML private Label createAlbumError2;
 	
+	/**
+	 * Takes the user back to the login page.
+	 * 
+	 * @param event				Logout button is pressed.
+	 * @throws IOException
+	 */
 	@FXML public void handleLogoutButton (ActionEvent event) throws IOException {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setContentText("Are you sure you want to log out?");
@@ -74,6 +86,12 @@ public class UserPageController implements Initializable {
 		}
 	}
 	
+	/**
+	 * Handles searching based on tags.
+	 * 
+	 * @param event				Tag search button is clicked.
+	 * @throws Exception
+	 */
 	@FXML public void handleTagSearchButton (ActionEvent event) throws Exception {
 		deleteAlbumError.setOpacity(0);
 		dateSearchError1.setOpacity(0);
@@ -95,9 +113,15 @@ public class UserPageController implements Initializable {
 			
 			while(searched.contains("=")){
 				currentKey = searched.substring(0, searched.indexOf('='));
-				searched = searched.substring(currentKey.length()).trim();
-				currentValue = searched.substring(0, searched.indexOf(','));
-				searched = searched.substring(currentValue.length()).trim();
+				searched = searched.substring(currentKey.length()+1).trim();
+				if(searched.contains(",")) {
+					currentValue = searched.substring(0, searched.indexOf(','));
+					searched = searched.substring(currentValue.length()+1).trim();
+				}
+				else {
+					currentValue = searched.trim();
+					searched = "";
+				}
 				
 				ArrayList<String> temp;
 				
@@ -122,21 +146,26 @@ public class UserPageController implements Initializable {
 					Album searchResults = new Album(found);
 					UserPageController.selected = searchResults;
 					
-					selected = LoginController.currentUser.getAlbums().get(listView.getSelectionModel().getSelectedIndex());
 					FXMLLoader loader = new FXMLLoader();
 					loader.setLocation(getClass().getResource("/view/SearchResults.fxml"));
 					Parent root = loader.load();
-					Scene scene = new Scene(root, 400, 600);
+					Scene scene = new Scene(root, 600, 400);
 					
 					((Node) event.getSource()).getScene().getWindow().hide();
 					stage.setScene(scene);
-					stage.setTitle(selected.getName());
+					stage.setTitle(tagField.getText());
 					stage.showAndWait();
 				}
 			}
 		}
 	}
 	
+	/**
+	 * Handles searching based on tags.
+	 * 
+	 * @param event			Date search button is clicked.
+	 * @throws Exception
+	 */
 	@FXML public void handleDateSearchButton (ActionEvent event) throws Exception {
 		deleteAlbumError.setOpacity(0);
 		dateSearchError1.setOpacity(0);
@@ -152,13 +181,18 @@ public class UserPageController implements Initializable {
 			dateSearchError2.setOpacity(1);
 		}
 		else{
+			if(!dateField.getText().contains("-")) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setContentText("The date search was formatted incorrectly. Required format is:\nMM/DD/YY-MM/DD/YY or YYYY-YYYY.");
+				alert.showAndWait();
+				return;
+			}
 			String searched, startDateString, endDateString;
-			searched = tagField.getText().trim();
+			searched = dateField.getText().trim();
 			ArrayList<image> found = new ArrayList<image>();
 			
-			while(searched.contains("=")){
 				startDateString = searched.substring(0, searched.indexOf('-'));
-				searched = searched.substring(startDateString.length()).trim();
+				searched = searched.substring(startDateString.length()+1).trim();
 				endDateString = searched.trim();
 				startDateString = startDateString.trim();
 				image tempImage;
@@ -206,6 +240,12 @@ public class UserPageController implements Initializable {
 					return;
 				}
 				
+				if(startDate.after(endDate)) {
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setContentText("The start date can't come after end date!");
+					alert.showAndWait();
+					return;
+				}
 				for(int x = 0; x < LoginController.currentUser.getAlbums().size(); x++) {
 					for (int y = 0; y < LoginController.currentUser.getAlbums().get(x).images.size(); y++) {
 							tempImage = LoginController.currentUser.getAlbums().get(x).images.get(y);
@@ -214,7 +254,7 @@ public class UserPageController implements Initializable {
 							}
 						}
 					}
-				}
+				
 				if (found.isEmpty()) {
 					Alert alert = new Alert(AlertType.ERROR);
 					alert.setContentText("No images between those dates found.");
@@ -224,20 +264,25 @@ public class UserPageController implements Initializable {
 					Album searchResults = new Album(found);
 					UserPageController.selected = searchResults;
 					
-					selected = LoginController.currentUser.getAlbums().get(listView.getSelectionModel().getSelectedIndex());
 					FXMLLoader loader = new FXMLLoader();
 					loader.setLocation(getClass().getResource("/view/SearchResults.fxml"));
 					Parent root = loader.load();
-					Scene scene = new Scene(root, 400, 600);
+					Scene scene = new Scene(root, 600, 400);
 					
 					((Node) event.getSource()).getScene().getWindow().hide();
 					stage.setScene(scene);
-					stage.setTitle(selected.getName());
+					stage.setTitle(dateField.getText());
 					stage.showAndWait();
 				}
-			}
 		}
+	}
 	
+	/**
+	 * Handles the opening of a selected album.
+	 * 
+	 * @param event				Open album button is clicked.
+	 * @throws IOException
+	 */
 	@FXML public void handleOpenAlbumButton (ActionEvent event) throws IOException {
 		
 		deleteAlbumError.setOpacity(0);
@@ -266,6 +311,12 @@ public class UserPageController implements Initializable {
 		}
 	}
 	
+	/**
+	 * Handles renaming of albums.
+	 * 
+	 * @param event			Rename album button is clicked.
+	 * @throws IOException
+	 */
 	@FXML public void handleRenameAlbumButton (ActionEvent event) throws IOException {
 		
 		deleteAlbumError.setOpacity(0);
@@ -294,6 +345,12 @@ public class UserPageController implements Initializable {
 		}
 	}
 	
+	/**
+	 * Handles deletion of albums.
+	 * 
+	 * @param event			Delete album button is clicked.
+	 * @throws IOException
+	 */
 	@FXML public void handleDeleteAlbumButton (ActionEvent event) throws IOException {
 		
 		deleteAlbumError.setOpacity(0);
@@ -309,20 +366,33 @@ public class UserPageController implements Initializable {
 			deleteAlbumError.setOpacity(1);
 		}
 		else {
-			LoginController.currentUser.deleteAlbum(LoginController.currentUser.getAlbums().get(listView.getSelectionModel().getSelectedIndex()));
-			
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/view/UserPage.fxml"));
-			Parent root = loader.load();
-			Scene scene = new Scene(root, 800, 400);
-			
-			((Node) event.getSource()).getScene().getWindow().hide();
-			stage.setScene(scene);
-			stage.setTitle("Photos08");
-			stage.show();
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Delete User");
+			alert.setHeaderText("Are you sure?");
+			alert.setContentText("Are you sure you want to delete this album? This cannot be undone.");
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == ButtonType.OK){
+				LoginController.currentUser.deleteAlbum(LoginController.currentUser.getAlbums().get(listView.getSelectionModel().getSelectedIndex()));
+				
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("/view/UserPage.fxml"));
+				Parent root = loader.load();
+				Scene scene = new Scene(root, 800, 400);
+				
+				((Node) event.getSource()).getScene().getWindow().hide();
+				stage.setScene(scene);
+				stage.setTitle("Photos08");
+				stage.show();
+			}
 		}
 	}
 	
+	/**
+	 * Handles creation of albums.
+	 * 
+	 * @param event				Create album button is clicked.
+	 * @throws IOException
+	 */
 	@FXML public void handleCreateAlbumButton (ActionEvent event) throws IOException {
 		
 		deleteAlbumError.setOpacity(0);
