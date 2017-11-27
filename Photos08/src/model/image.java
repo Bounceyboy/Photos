@@ -16,9 +16,7 @@ public class image implements Serializable{
 	private HashMap<String, ArrayList<String>> tags = new HashMap<String, ArrayList<String>>();
 	
 	
-	//TODO I edited this to make it only take the location of the file (url)
-	//I did this because we aren't supposed to move the files anyway, we'll just track which files are in which albums
-	//and serialize that info.
+	
 	/**
 	 * 
 	 * @param url jpg or png location

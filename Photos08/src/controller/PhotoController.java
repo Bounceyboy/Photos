@@ -1,7 +1,6 @@
 package controller;
 
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
+
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,7 +19,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import model.User;
+
 /**
  * 
  * @author Rituraj Kumar

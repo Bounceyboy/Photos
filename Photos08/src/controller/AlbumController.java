@@ -4,21 +4,17 @@ import java.io.*;
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -61,7 +57,6 @@ public class AlbumController {
 	}
 	
 	
-	//TODO Main.getstage() is confusing to me, couldn't fix this
 	/**
 	 * image browser
 	 * @return image file
@@ -177,7 +172,7 @@ public class AlbumController {
 		}
 	}
 	/**
-	 * TODO copy to another album
+	 * copy photo to another album
 	 */
 	public void copy() {
 		if (selected != null) {
@@ -227,7 +222,7 @@ public class AlbumController {
 		}
 	}
 	/**
-	 * TODO move to another album
+	 * move photo to another album
 	 */
 	public void move() {
 		if (selected != null) {
