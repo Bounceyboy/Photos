@@ -65,6 +65,8 @@ public class PhotoController {
 			if(submittedtag.getText().lastIndexOf("=")!=-1){
 				String key=submittedtag.getText().substring(0, submittedtag.getText().lastIndexOf("="));
 				String value = submittedtag.getText().substring(submittedtag.getText().lastIndexOf("=")+1);
+				key.trim();
+				value.trim();
 				AlbumController.selected.addtags(key, value);
 				LoginController.currentUser.write();
 				inittags();
