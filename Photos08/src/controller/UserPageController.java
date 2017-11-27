@@ -249,7 +249,7 @@ public class UserPageController implements Initializable {
 				for(int x = 0; x < LoginController.currentUser.getAlbums().size(); x++) {
 					for (int y = 0; y < LoginController.currentUser.getAlbums().get(x).images.size(); y++) {
 							tempImage = LoginController.currentUser.getAlbums().get(x).images.get(y);
-							if(tempImage.getdate().after(startDate) && tempImage.getdate().before(endDate)) {
+							if(tempImage.getdate().compareTo(startDate)>=0 && tempImage.getdate().compareTo(endDate) <= 0) {
 								found.add(tempImage);
 							}
 						}
