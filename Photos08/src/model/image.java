@@ -79,6 +79,9 @@ public class image implements Serializable{
 		return this.img;
 	}
 	
+	public void setfile(String file){
+		this.img=new File(file);
+	}
 	/**
 	 * 
 	 * @param key tagname

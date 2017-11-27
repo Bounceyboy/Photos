@@ -75,9 +75,20 @@ public class AlbumController {
 	public void tileload() throws Exception {
 		this.tile.getChildren().clear();
 		for (int i = 0; i < UserPageController.selected.images.size(); i++) {
-			// System.out.println(UserPageController.selected.images.get(i).getfile().getName());
+			
+			
+			if(UserPageController.selected.images.get(i).getfile().getPath().contains(
+					"\\users\\stock\\stock photos")){
+				UserPageController.selected.images.get(i).setfile(
+						System.getProperty("user.dir")
+						+ "\\users\\stock\\stock photos"+"\\"+
+						UserPageController.selected.images.get(i).getfile().getName());
+				
+			}
 			UserPageController.selected.images.get(i).initilize();
-			ImageView imageView = new ImageView(UserPageController.selected.images.get(i).getthumbnail());
+			ImageView imageView;
+			imageView = new ImageView(UserPageController.selected.images.get(i).getthumbnail());
+			
 			Text caption = new Text(UserPageController.selected.images.get(i).getCaption());
 			VBox thumbnail = new VBox();
 			thumbnail.setMaxHeight(90);
