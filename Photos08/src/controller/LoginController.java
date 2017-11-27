@@ -69,7 +69,7 @@ public class LoginController {
 				file.close();
 				object.close();
 				
-				if(password == currentUser.getPassword()) {
+				if(password.equals(currentUser.getPassword())) {
 					FXMLLoader loader = new FXMLLoader();
 					loader.setLocation(getClass().getResource("/view/UserPage.fxml"));
 					Parent root = loader.load();
