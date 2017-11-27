@@ -51,8 +51,8 @@ public class PhotoController {
 		this.caption.setText(AlbumController.selected.getCaption());
 		
 		this.photo = new ImageView(AlbumController.selected.getpic());
-		this.photo.fitHeightProperty().bind(sp.heightProperty());
-		this.photo.fitWidthProperty().bind(sp.widthProperty());
+		/*this.photo.fitHeightProperty().bind(sp.heightProperty());
+		this.photo.fitWidthProperty().bind(sp.widthProperty());*/
 		this.sp.setContent(this.photo);
 		this.root.setLeft(this.sp);
 	}
@@ -95,7 +95,7 @@ public class PhotoController {
 	public void back(ActionEvent event) throws Exception{
 		
 		Stage album = (Stage) ((Node)event.getSource()).getScene().getWindow();
-		FXMLLoader fxmlLoader =new FXMLLoader(getClass().getResource("album.fxml"));
+		FXMLLoader fxmlLoader =new FXMLLoader(getClass().getResource("/view/Album.fxml"));
 		Parent root = (Parent)fxmlLoader.load();
 		album.setScene(new Scene(root, 1224, 591));
 		album.show();

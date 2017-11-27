@@ -30,7 +30,7 @@ import model.image;
 
 public class UserPageController implements Initializable {
 
-	Stage stage = new Stage();
+	public static Stage stage = new Stage();
 	
 	public static Album selected;
 	
@@ -208,7 +208,7 @@ public class UserPageController implements Initializable {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/view/Album.fxml"));
 			Parent root = loader.load();
-			Scene scene = new Scene(root, 591, 1224);
+			Scene scene = new Scene(root, 1224, 591);
 			
 			((Node) event.getSource()).getScene().getWindow().hide();
 			stage.setScene(scene);

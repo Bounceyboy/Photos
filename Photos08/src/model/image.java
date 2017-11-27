@@ -10,7 +10,6 @@ import java.util.*;
 public class image implements Serializable{
 	private transient Image pic;
 	private transient Image thumbnail;
-	private File file;
 	private File img;
 	private Date date;
 	private String caption;
@@ -51,7 +50,7 @@ public class image implements Serializable{
 	public void initilize() throws Exception{
 		
 		this.pic = new Image(this.img.toURI().toString());
-		this.thumbnail = new Image(img.toURI().toString(),150,0,true,true);
+		this.thumbnail = new Image(img.toURI().toString(),90,90,true,true);
 		
 	}
 	
@@ -77,7 +76,7 @@ public class image implements Serializable{
 	}
 	
 	public File getfile(){
-		return this.file;
+		return this.img;
 	}
 	
 	/**

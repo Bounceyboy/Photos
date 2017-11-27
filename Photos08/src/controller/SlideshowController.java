@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import model.image;
 /**
@@ -24,6 +25,8 @@ public class SlideshowController {
 	@FXML BorderPane root;
 	@FXML ImageView currentimage;
 	@FXML ScrollPane sp;
+	private StackPane currentholder;
+	
 	public image imginfo;
 	
 	@FXML private void initialize(){
@@ -38,9 +41,10 @@ public class SlideshowController {
 		else if(UserPageController.selected.images.size()>0){
 			this.currentimage=new ImageView(UserPageController.selected.images.get(0).getpic());
 		}
-		currentimage.fitHeightProperty().bind(sp.heightProperty());
-		currentimage.fitWidthProperty().bind(sp.widthProperty());
-		sp.setContent(this.currentimage);
+		/*currentimage.fitHeightProperty().bind(sp.heightProperty());
+		currentimage.fitWidthProperty().bind(sp.widthProperty());*/
+		currentholder = new StackPane(this.currentimage);
+		sp.setContent(this.currentholder);
 		root.setCenter(this.sp);
 	}
 	/**
@@ -60,9 +64,10 @@ public class SlideshowController {
 		this.imginfo=UserPageController.selected.images.get(i);
 		this.currentimage= new ImageView(imginfo.getpic());
 		
-		this.currentimage.fitWidthProperty().bind(this.sp.heightProperty());
-		this.currentimage.fitWidthProperty().bind(this.sp.widthProperty());
-		this.sp.setContent(this.currentimage);
+		/*this.currentimage.fitWidthProperty().bind(this.sp.heightProperty());
+		this.currentimage.fitWidthProperty().bind(this.sp.widthProperty());*/
+		currentholder = new StackPane(this.currentimage);
+		sp.setContent(this.currentholder);
 		this.root.setCenter(this.sp);
 	}
 	/**
@@ -82,9 +87,10 @@ public class SlideshowController {
 		this.imginfo=UserPageController.selected.images.get(i);
 		this.currentimage= new ImageView(imginfo.getpic());
 		
-		this.currentimage.fitWidthProperty().bind(this.sp.heightProperty());
-		this.currentimage.fitWidthProperty().bind(this.sp.widthProperty());
-		this.sp.setContent(this.currentimage);
+		/*this.currentimage.fitWidthProperty().bind(this.sp.heightProperty());
+		this.currentimage.fitWidthProperty().bind(this.sp.widthProperty());*/
+		currentholder = new StackPane(this.currentimage);
+		sp.setContent(this.currentholder);
 		this.root.setCenter(this.sp);
 	}
 	/**
@@ -94,9 +100,9 @@ public class SlideshowController {
 	 * @throws Exception
 	 */
 	public void back(ActionEvent event) throws Exception{
-		
+		AlbumController.selected=null;
 		Stage album = (Stage) ((Node)event.getSource()).getScene().getWindow();
-		FXMLLoader fxmlLoader =new FXMLLoader(getClass().getResource("album.fxml"));
+		FXMLLoader fxmlLoader =new FXMLLoader(getClass().getResource("/view/Album.fxml"));
 		Parent root = (Parent)fxmlLoader.load();
 		album.setScene(new Scene(root, 1224, 591));
 		album.show();

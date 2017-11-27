@@ -1,13 +1,10 @@
 package controller;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -16,20 +13,21 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import model.User;
 import model.Album;
 import model.image;
 /**
@@ -50,6 +48,8 @@ public class AlbumController {
 	public static image selected = null;
 	public FileChooser filechoice = new FileChooser();
 	@FXML private TextField newcaption;
+	private Parent selectedparent;
+	
 	
 	@FXML
 	private void initialize() throws Exception {
@@ -68,7 +68,7 @@ public class AlbumController {
 	public File browse() {
 		filechoice.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Images", "*.*"),
 				new FileChooser.ExtensionFilter("JPG", "*.jpg"), new FileChooser.ExtensionFilter("PNG", "*.png"));
-		File img = this.filechoice.showOpenDialog(Main.getstage());
+		File img = this.filechoice.showOpenDialog(UserPageController.stage);
 		return img;
 	}
 	/**
@@ -82,9 +82,16 @@ public class AlbumController {
 			// System.out.println(UserPageController.selected.images.get(i).getfile().getName());
 			UserPageController.selected.images.get(i).initilize();
 			ImageView imageView = new ImageView(UserPageController.selected.images.get(i).getthumbnail());
-			imageView.setFitWidth(150);
 			Text caption = new Text(UserPageController.selected.images.get(i).getCaption());
-			imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			VBox thumbnail = new VBox();
+			thumbnail.setMaxHeight(90);
+			thumbnail.setMaxWidth(90);
+			thumbnail.setPrefSize(100, 100);
+			imageView.fitWidthProperty().bind(thumbnail.widthProperty());
+			//imageView.fitHeightProperty().bind(thumbnail.heightProperty());
+			thumbnail.getChildren().addAll(imageView, caption);
+			
+			thumbnail.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 				@Override
 				public void handle(MouseEvent event) {
@@ -95,13 +102,18 @@ public class AlbumController {
 							for (int i = 0; i < UserPageController.selected.images.size(); i++) {
 								if (UserPageController.selected.images.get(i).getthumbnail().equals(imageView.getImage())) {
 									selected = UserPageController.selected.images.get(i);
-									
+									break;
 								}
 							}
+							if(selectedparent != null){
+								selectedparent.setStyle("-fx-background-color:white;");
+							}
+							selectedparent = imageView.getParent();
+							selectedparent.setStyle("-fx-background-color:blue;");
 						} else if (event.getClickCount() > 1) {
 							try{
 							Stage slideshow = (Stage) ((Node) event.getSource()).getScene().getWindow();
-							FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Photoview.fxml"));
+							FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/Photoview.fxml"));
 							Parent root = (Parent) fxmlLoader.load();
 							slideshow.setScene(new Scene(root, 1224, 591));
 							slideshow.show();
@@ -115,13 +127,7 @@ public class AlbumController {
 				}
 
 			});
-			VBox thumbnail = new VBox();
-			thumbnail.setMaxHeight(120);
-			//thumbnail.setMinHeight(120);
-			imageView.fitWidthProperty().bind(thumbnail.widthProperty());
-			imageView.fitHeightProperty().bind(thumbnail.heightProperty());
-			thumbnail.setPrefSize(150, 150);
-			thumbnail.getChildren().addAll(imageView, caption);
+			
 			this.tile.getChildren().addAll(thumbnail);
 			
 
@@ -174,7 +180,46 @@ public class AlbumController {
 	 */
 	public void copy() {
 		if (selected != null) {
-			selected = null;
+			BorderPane bp = new BorderPane();
+			ArrayList<Album> albums = LoginController.currentUser.getAlbums();
+			ArrayList<String> names = new ArrayList<String>();
+			for (int x = 0; x<albums.size(); x++){
+				names.add(albums.get(x).getName());
+			}
+			ListView<String> albumlist = new ListView<String>(FXCollections.observableArrayList(names));
+			bp.setCenter(albumlist);
+			Button submit = new Button("Submit");
+			bp.setBottom(submit);
+			Scene albumchoice = new Scene(bp,400,400);
+			Stage stage = new Stage();
+			stage.setScene(albumchoice);
+			stage.show();
+			submit.setOnAction(new EventHandler<ActionEvent>(){
+
+				@Override
+				public void handle(ActionEvent event) {
+					if(albumlist.getSelectionModel().getSelectedItem() != null){
+						try {
+							for(int x = 0; x<LoginController.currentUser.getAlbums().size(); x++){
+								if (LoginController.currentUser.getAlbums().get(x).getName().equals(
+										albumlist.getSelectionModel().getSelectedItem())) {
+									LoginController.currentUser.getAlbums().get(x).addimage(selected);
+									LoginController.currentUser.write();
+									stage.close();
+									return;
+								}			
+							}
+							
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+					
+				}
+				
+			});
+			
+			
 			this.warningtxt.setVisible(false);
 		} else {
 			this.warningtxt.setVisible(true);
@@ -185,7 +230,48 @@ public class AlbumController {
 	 */
 	public void move() {
 		if (selected != null) {
-			selected = null;
+			BorderPane bp = new BorderPane();
+			ArrayList<Album> albums = LoginController.currentUser.getAlbums();
+			ArrayList<String> names = new ArrayList<String>();
+			for (int x = 0; x<albums.size(); x++){
+				names.add(albums.get(x).getName());
+			}
+			ListView<String> albumlist = new ListView<String>(FXCollections.observableArrayList(names));
+			bp.setCenter(albumlist);
+			Button submit = new Button("Submit");
+			bp.setBottom(submit);
+			Scene albumchoice = new Scene(bp,400,400);
+			Stage stage = new Stage();
+			stage.setScene(albumchoice);
+			stage.show();
+			submit.setOnAction(new EventHandler<ActionEvent>(){
+
+				@Override
+				public void handle(ActionEvent event) {
+					if(albumlist.getSelectionModel().getSelectedItem() != null){
+						try {
+							for(int x = 0; x<LoginController.currentUser.getAlbums().size(); x++){
+								if (LoginController.currentUser.getAlbums().get(x).getName().equals(
+										albumlist.getSelectionModel().getSelectedItem())) {
+									LoginController.currentUser.getAlbums().get(x).addimage(selected);
+									UserPageController.selected.removeimage(selected);
+									LoginController.currentUser.write();
+									tileload();
+									stage.close();
+									return;
+								}			
+							}
+							
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+					
+				}
+				
+			});
+			
+			
 			this.warningtxt.setVisible(false);
 		} else {
 			this.warningtxt.setVisible(true);
@@ -200,7 +286,7 @@ public class AlbumController {
 	public void slideshow(ActionEvent event) throws Exception {
 
 		Stage slideshow = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Slideshow.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/Slideshow.fxml"));
 		Parent root = (Parent) fxmlLoader.load();
 		//SlideshowController slide = fxmlLoader.<SlideshowController>getController();
 		slideshow.setScene(new Scene(root, 1224, 591));
@@ -218,6 +304,7 @@ public class AlbumController {
 			selected.setCaption(this.newcaption.getText());
 			LoginController.currentUser.write();
 			tileload();
+			selected=null;
 			this.warningtxt.setVisible(false);
 		}
 		else if (selected==null){
@@ -230,9 +317,15 @@ public class AlbumController {
 	}
 	
 	/**
-	 * TODO return to user
+	 * return to user
+	 * @throws IOException 
 	 */
-	public void menu() {
-
+	public void menu(ActionEvent event) throws IOException {
+		
+		Stage album = (Stage) ((Node)event.getSource()).getScene().getWindow();
+		FXMLLoader fxmlLoader =new FXMLLoader(getClass().getResource("/view/UserPage.fxml"));
+		Parent root = (Parent)fxmlLoader.load();
+		album.setScene(new Scene(root, 800, 400));
+		album.show();
 	}
 }
