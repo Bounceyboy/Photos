@@ -2,9 +2,11 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -97,13 +99,16 @@ public class UserPageController implements Initializable {
 				currentValue = searched.substring(0, searched.indexOf(','));
 				searched = searched.substring(currentValue.length()).trim();
 				
+				ArrayList<String> temp;
+				
 				currentKey = currentKey.trim();
 				currentValue = currentValue.trim();
 				
 				for(int x = 0; x < LoginController.currentUser.getAlbums().size(); x++) {
 					for (int y = 0; y < LoginController.currentUser.getAlbums().get(x).images.size(); y++) {
 						currentTags = LoginController.currentUser.getAlbums().get(x).images.get(y).gettags();
-						if(currentTags.containsKey(currentKey) && currentTags.containsValue(currentValue)){
+						temp = currentTags.get(currentKey);
+						if(currentTags.containsKey(currentKey) && temp.contains(currentValue)){
 							found.add(LoginController.currentUser.getAlbums().get(x).images.get(y));
 						}
 					}
@@ -147,7 +152,6 @@ public class UserPageController implements Initializable {
 			dateSearchError2.setOpacity(1);
 		}
 		else{
-			//TODO change to date search
 			String searched, startDateString, endDateString;
 			searched = tagField.getText().trim();
 			ArrayList<image> found = new ArrayList<image>();
@@ -157,12 +161,57 @@ public class UserPageController implements Initializable {
 				searched = searched.substring(startDateString.length()).trim();
 				endDateString = searched.trim();
 				startDateString = startDateString.trim();
+				image tempImage;
 				
-				//TODO convert string to date
+				Date startDate,endDate;
+				
+				if (startDateString.length()==4) {
+					if (endDateString.length()==4) {
+						DateFormat df = new SimpleDateFormat("YYYY");
+						startDate = df.parse(startDateString);
+						endDate = df.parse(endDateString);
+					}
+					else {
+						Alert alert = new Alert(AlertType.ERROR);
+						alert.setContentText("The date search was formatted incorrectly. Required format is:\nMM/DD/YYYY-MM/DD/YYYY or YYYY-YYYY.");
+						alert.showAndWait();
+						return;
+					}
+				}
+				else if (startDateString.contains("/")) {
+					if (startDateString.length()==10 && startDateString.charAt(2)=='/' && startDateString.charAt(5)=='/') {
+						if (endDateString.length()==10 && endDateString.charAt(2)=='/' && endDateString.charAt(5)=='/') {
+							DateFormat df = new SimpleDateFormat("MM/DD/YYYY");
+							startDate = df.parse(startDateString);
+							endDate = df.parse(endDateString);
+						}
+						else {
+							Alert alert = new Alert(AlertType.ERROR);
+							alert.setContentText("The date search was formatted incorrectly. Required format is:\nMM/DD/YY-MM/DD/YY or YYYY-YYYY.");
+							alert.showAndWait();
+							return;
+						}
+					}
+					else {
+						Alert alert = new Alert(AlertType.ERROR);
+						alert.setContentText("The date search was formatted incorrectly. Required format is:\nMM/DD/YY-MM/DD/YY or YYYY-YYYY.");
+						alert.showAndWait();
+						return;
+					}
+				}
+				else {
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setContentText("The date search was formatted incorrectly. Required format is:\nMM/DD/YY-MM/DD/YY or YYYY-YYYY.");
+					alert.showAndWait();
+					return;
+				}
 				
 				for(int x = 0; x < LoginController.currentUser.getAlbums().size(); x++) {
 					for (int y = 0; y < LoginController.currentUser.getAlbums().get(x).images.size(); y++) {
-							//check for date, if good found.add
+							tempImage = LoginController.currentUser.getAlbums().get(x).images.get(y);
+							if(tempImage.getdate().after(startDate) && tempImage.getdate().before(endDate)) {
+								found.add(tempImage);
+							}
 						}
 					}
 				}

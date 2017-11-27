@@ -1,6 +1,6 @@
 package controller;
 
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -26,7 +26,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import model.User;
-import model.UserList;
 
 public class AdminPageController implements Initializable {
 
@@ -58,10 +57,7 @@ public class AdminPageController implements Initializable {
 			alert.setContentText("Are you sure you want to delete this user and all of his or her albums? This cannot be undone.");
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() == ButtonType.OK){
-				UserList userList = new UserList("users/loginInfo");
-				User temp = new User(listView.getSelectionModel().getSelectedItem(), "NA");
-				userList.deleteUser(temp);
-				Files.deleteIfExists(Paths.get("users/" + temp.getUsername() + ".txt"));
+				Files.deleteIfExists(Paths.get("users/" + listView.getSelectionModel().getSelectedItem() + ".txt"));
 				
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("/view/AdminPage.fxml"));
@@ -90,11 +86,12 @@ public class AdminPageController implements Initializable {
 			String username = usernameField.getText();
 			String password = passwordField.getText();
 			
-			UserList userList = new UserList("users/loginInfo");
-			if(userList.findUser(username, password)) {
+			File temp = new File("users/" + username + ".txt");
+			if(temp.exists() && !temp.isDirectory()) {
 				createUserExistsMessage.setOpacity(1);
 			}
-			else if(userList.findUser(username)) {
+			
+/*			else if(userList.findUser(username)) {
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 				alert.setTitle("Password Change?");
 				alert.setHeaderText("User exists.");
@@ -116,10 +113,10 @@ public class AdminPageController implements Initializable {
 					stage.setTitle("Photos08");
 					stage.show();
 				}
-			}
+			} */		//password change functionality?
+			
 			else {
 				User toAdd = new User(username, password);
-				userList.addUser(toAdd);
 				toAdd.write();
 				
 				FXMLLoader loader = new FXMLLoader();
@@ -157,15 +154,16 @@ public class AdminPageController implements Initializable {
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		UserList userList;
-		try {
-			userList = new UserList("users/loginInfo");
-			ArrayList<String> names = userList.getNames();
-			listView.setItems(FXCollections.observableArrayList(names));
-			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		ArrayList<String> names = new ArrayList<String>();
+		File usersFolder = new File("/users/");
+		File[] allFiles = usersFolder.listFiles();
+		for (File file : allFiles) {
+			if(file.isFile()) {
+				names.add(file.getName().substring(0, file.getName().lastIndexOf('.')));
+			}
 		}
-		
+		if(!names.isEmpty()) {
+			listView.setItems(FXCollections.observableArrayList(names));	
+		}
 	}
 }

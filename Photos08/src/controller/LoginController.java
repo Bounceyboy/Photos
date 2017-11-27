@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -16,9 +17,10 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.User;
-import model.UserList;
 
 /**
+ * Controller for the Login page. Handles deserialization of User objects.
+ * 
  * @author Jason Holley
  *
  */
@@ -34,7 +36,6 @@ public class LoginController {
 	
  
 	/**
-	 * @author Jason Holley
 	 * @param event						Submit button is clicked.
 	 * @throws ClassNotFoundException
 	 * @throws IOException
@@ -58,24 +59,30 @@ public class LoginController {
 			stage.show();
 		}
 		else {
-			UserList userList = new UserList("users/loginInfo");
-			if(userList.findUser(username, password)) {
+			File temp = new File("users/" + username + ".txt");
+			if(temp.exists() && !temp.isDirectory()) {
+				FileInputStream file = new FileInputStream("users/" + username + ".txt");
+				ObjectInputStream object = new ObjectInputStream(file);
+				
+				currentUser = (User) object.readObject();
+				
+				file.close();
+				object.close();
+				
+				if(password == currentUser.getPassword()) {
+					FXMLLoader loader = new FXMLLoader();
+					loader.setLocation(getClass().getResource("/view/UserPage.fxml"));
+					Parent root = loader.load();
+					Scene scene = new Scene(root, 800, 400);
 					
-				ObjectInputStream inputStream = null;
-			    FileInputStream streamIn = new FileInputStream("users/" + username + ".txt");
-			    inputStream = new ObjectInputStream(streamIn);
-			    currentUser = (User) inputStream.readObject();
-			    inputStream.close();
-				
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/view/UserPage.fxml"));
-				Parent root = loader.load();
-				Scene scene = new Scene(root, 800, 400);
-				
-				((Node) event.getSource()).getScene().getWindow().hide();
-				stage.setScene(scene);
-				stage.setTitle("Photos08");
-				stage.show();
+					((Node) event.getSource()).getScene().getWindow().hide();
+					stage.setScene(scene);
+					stage.setTitle("Photos08");
+					stage.show();
+				}
+				else {
+					errorMessage.setOpacity(1);
+				}
 			}
 			else {
 				errorMessage.setOpacity(1);
@@ -83,6 +90,11 @@ public class LoginController {
 		}
 	}
 	
+	/**
+	 * Setter for LoginController.stage
+	 * 
+	 * @param stage
+	 */
 	public void setStage (Stage stage) {
 		this.stage = stage;
 	}
